@@ -21,39 +21,60 @@ public:
 
 class Solution {
 public:
+    
+    unordered_map<Node*, Node*>copies;
     Node* cloneGraph(Node* node) {
         
-        if(!node)
-        {
-            return NULL;
-        }
-        queue<Node*>q;
-        q.push(node);
+        //BFS approach:-
+//         if(!node)
+//         {
+//             return NULL;
+//         }
+//         queue<Node*>q;
+//         q.push(node);
         
-        unordered_map<Node*, Node*>copies;
-        Node* root=new Node(node->val);
-        copies[node]=root;
+//         unordered_map<Node*, Node*>copies;
+//         Node* root=new Node(node->val);
+//         copies[node]=root;
         
-        while(!q.empty())
-        {
-            Node* curr=q.front();
-            q.pop();
+//         while(!q.empty())
+//         {
+//             Node* curr=q.front();
+//             q.pop();
            
-            for(auto x:curr->neighbors)
-            {
+//             for(auto x:curr->neighbors)
+//             {
                 
-                if(copies.find(x)==copies.end())
-                {
-                    copies[x]=new Node(x->val);
-                    q.push(x);
-                }
-                copies[curr]->neighbors.push_back(copies[x]);
+//                 if(copies.find(x)==copies.end())
+//                 {
+//                     copies[x]=new Node(x->val);
+//                     q.push(x);
+//                 }
+//                 copies[curr]->neighbors.push_back(copies[x]);
                 
-            }
+//             }
             
+//         }
+        
+//         return root;
+        
+        
+        
+        //DFS approach:-
+        
+        if(!node)
+            return NULL;
+        
+        if(copies.find(node)==copies.end())
+        {
+            copies[node]=new Node(node->val);
+            for(auto x:node->neighbors)
+            {
+                copies[node]->neighbors.push_back(cloneGraph(x));
+            }
         }
         
-        return root;
+        return copies[node];
         
     }
 };
